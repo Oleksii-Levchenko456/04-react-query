@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { keepPreviousData } from "@tanstack/react-query";
 import ReactPaginate from 'react-paginate';
 import css from './App.module.css'
+import Loader from "../Loader/Loader";
 
 
 
@@ -20,7 +21,7 @@ export default function App() {
     const [page, setPage] = useState(1)
     const [query, setQuery] = useState('')
 
-    const { data, isError } = useQuery({
+    const { data, isLoading, isError } = useQuery({
         queryKey: ['movie', query, page],
         queryFn: () => fetchMovie(query, page),
         enabled: query !== '',
@@ -51,6 +52,7 @@ export default function App() {
         <>
             <SearchBar onSubmit={handleSearch} />
             {isError && <ErrorMessage />}
+            {isLoading && <Loader />}
             {data && <ReactPaginate
                 pageCount={data.total_pages}
                 pageRangeDisplayed={5}

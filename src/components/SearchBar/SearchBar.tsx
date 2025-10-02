@@ -11,23 +11,23 @@ interface onSubmitProps {
 
 }
 interface OrderFormValues {
-    quary: string;
+    query: string;
 }
 
 export default function SearchBar({ onSubmit }: onSubmitProps) {
 
     const initialValues: OrderFormValues = {
-        quary: ''
+        query: ''
     }
     const handleSubmit = (
         values: OrderFormValues,
         actions: FormikHelpers<OrderFormValues>
     ) => {
-        if (values.quary.trim() === '') {
+        if (values.query.trim() === '') {
             toast('Please enter your search query.')
             return
         }
-        onSubmit(values.quary)
+        onSubmit(values.query)
         actions.resetForm();
     }
     return (
@@ -41,22 +41,10 @@ export default function SearchBar({ onSubmit }: onSubmitProps) {
                 >
                     Powered by TMDB
                 </a>
-                {/* <form className={styles.form} action={handleSubmit} >
-                    <input
-                        className={styles.input}
-                        type="text"
-                        name="query"
-                        autoComplete="off"
-                        placeholder="Search movies..."
-                        autoFocus
-                    />
-                    <button className={styles.button} type="submit">
-                        Search
-                    </button>
-                </form> */}
+
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                     <Form className={styles.form}>
-                        <Field type='text' name='quary' placeholder='Search movies...' className={styles.input} />
+                        <Field type='text' name='query' placeholder='Search movies...' className={styles.input} />
                         <button className={styles.button} type="submit">Search</button>
                     </Form>
                 </Formik>
