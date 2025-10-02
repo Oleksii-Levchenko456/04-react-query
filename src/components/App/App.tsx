@@ -20,7 +20,7 @@ export default function App() {
     const [page, setPage] = useState(1)
     const [query, setQuery] = useState('')
 
-    const { data, error, isLoading, isError } = useQuery({
+    const { data, isError } = useQuery({
         queryKey: ['movie', query, page],
         queryFn: () => fetchMovie(query, page),
         enabled: query !== '',
