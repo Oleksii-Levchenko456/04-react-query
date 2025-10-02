@@ -1,21 +1,34 @@
 import styles from './SearchBar.module.css'
 import toast, { Toaster } from 'react-hot-toast';
+import { Formik, Form, Field } from 'formik';
+import type { FormikHelpers } from 'formik'
+
 
 
 
 interface onSubmitProps {
     onSubmit: (query: string) => void;
+
 }
+interface OrderFormValues {
+    quary: string;
+}
+
 export default function SearchBar({ onSubmit }: onSubmitProps) {
 
-    const handleSubmit = (formData: FormData) => {
-        const nameFilms = (formData.get("query") as string)?.trim();
-        if (nameFilms === '') {
+    const initialValues: OrderFormValues = {
+        quary: ''
+    }
+    const handleSubmit = (
+        values: OrderFormValues,
+        actions: FormikHelpers<OrderFormValues>
+    ) => {
+        if (values.quary.trim() === '') {
             toast('Please enter your search query.')
             return
         }
-        onSubmit(nameFilms)
-
+        onSubmit(values.quary)
+        actions.resetForm();
     }
     return (
         <header className={styles.header}>
@@ -28,7 +41,7 @@ export default function SearchBar({ onSubmit }: onSubmitProps) {
                 >
                     Powered by TMDB
                 </a>
-                <form className={styles.form} action={handleSubmit} >
+                {/* <form className={styles.form} action={handleSubmit} >
                     <input
                         className={styles.input}
                         type="text"
@@ -40,7 +53,13 @@ export default function SearchBar({ onSubmit }: onSubmitProps) {
                     <button className={styles.button} type="submit">
                         Search
                     </button>
-                </form>
+                </form> */}
+                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                    <Form className={styles.form}>
+                        <Field type='text' name='quary' placeholder='Search movies...' className={styles.input} />
+                        <button className={styles.button} type="submit">Search</button>
+                    </Form>
+                </Formik>
                 <Toaster />
             </div>
         </header>
